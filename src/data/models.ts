@@ -35,6 +35,9 @@ export interface ICompetitionData {
 export interface IProfileData {
   username: string;
   avatar?: string;
+  highestSeverity?: string;
+  totalAmountRewards?: number;
+  totalFindings?: number;
 }
 
 export type IAllTimeLeaderboard = {

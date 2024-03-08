@@ -85,10 +85,15 @@ export async function POST(req: NextRequest): Promise<Response> {
     .slice(page * HACKERS_PER_PAGE, (page + 1) * HACKERS_PER_PAGE)
     .map((username) => {
       const profile = allProfiles.find((p) => p.username === username) as IHackerProfile;
+      const leaderboardStats = leaderboard.find((l) => l.username?.toLowerCase() === username.toLowerCase());
+
       return {
         username: profile.username,
         avatar: profile.avatar,
-      } as IProfileData;
+        highestSeverity: leaderboardStats?.highestSeverity,
+        totalAmountRewards: leaderboardStats?.totalAmount.usd,
+        totalFindings: leaderboardStats?.totalSubmissions,
+      } satisfies IProfileData;
     });
   const hackersProfilesToSend = encodeURIComponent(JSON.stringify(hackersProfiles));
   const totalPages = Math.ceil(optedInUsersOnLeaderboard.length / HACKERS_PER_PAGE);
