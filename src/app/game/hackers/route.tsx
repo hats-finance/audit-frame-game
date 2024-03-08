@@ -6,9 +6,10 @@ import { COLORS } from "@/consts/colors";
 
 export const runtime = "experimental-edge";
 
-const HACKERS_PER_ROW = 5;
-
 export async function GET(request: Request) {
+  const BIG_UI = true;
+  const HACKERS_PER_ROW = BIG_UI ? 2 : 5;
+
   const IBMPlexMono = await fetch(new URL("/public/assets/IBMPlexMono-Regular.ttf", import.meta.url)).then((res) =>
     res.arrayBuffer()
   );
@@ -33,7 +34,7 @@ export async function GET(request: Request) {
   console.log(hackers);
 
   const HACKER_WIDTH = (900 * 0.9) / HACKERS_PER_ROW;
-  const HACKER_HEIGHT = 190;
+  const HACKER_HEIGHT = BIG_UI ? 310 : 190;
   const HACKER_MARGIN = (900 * 0.1) / 2 / HACKERS_PER_ROW;
 
   return new ImageResponse(
@@ -92,7 +93,7 @@ export async function GET(request: Request) {
           <div style={{ background: "blue", height: HACKER_HEIGHT, width: HACKER_WIDTH, margin: `0 ${HACKER_MARGIN}px 40px` }}>
             Test 2
           </div>
-          <div style={{ background: "yellow", height: HACKER_HEIGHT, width: HACKER_WIDTH, margin: `0 ${HACKER_MARGIN}px 40px` }}>
+          {/* <div style={{ background: "yellow", height: HACKER_HEIGHT, width: HACKER_WIDTH, margin: `0 ${HACKER_MARGIN}px 40px` }}>
             Test 4
           </div>
           <div style={{ background: "blue", height: HACKER_HEIGHT, width: HACKER_WIDTH, margin: `0 ${HACKER_MARGIN}px 40px` }}>
@@ -124,7 +125,7 @@ export async function GET(request: Request) {
           </div>
           <div style={{ background: "yellow", height: HACKER_HEIGHT, width: HACKER_WIDTH, margin: `0 ${HACKER_MARGIN}px 40px` }}>
             Test 4
-          </div>
+          </div> */}
         </div>
 
         <div style={{ display: "flex", position: "absolute", bottom: 30, right: "50%", transform: "translateX(50%)" }}>

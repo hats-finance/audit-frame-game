@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { FrameRequest, getFrameMessage } from "@coinbase/onchainkit";
 import { config } from "@/config/config";
-import { IProfileData } from "@/data/models";
+import { IAllTimeLeaderboard, IProfileData } from "@/data/models";
 import { getEditSessionByAddressOrId } from "@/data/requests/getEditSessionByAddressOrId";
 import { getUserFromMessage } from "@/helpers/getUserFromMessage";
 import { getEditSessionIdOrAddressFromMessage } from "@/helpers/getEditSessionIdOrAddressFromMessage";
@@ -34,9 +34,14 @@ export async function POST(req: NextRequest): Promise<Response> {
     throw new Error("Invalid frame request");
   }
 
+  const leaderboard = ((await fetch(`${config.apiURL}/utils/get-leaderboard`).then((res) => res.json()))?.leaderboard ??
+    []) as IAllTimeLeaderboard;
   const editSessionIdOrAddress = getEditSessionIdOrAddressFromMessage(message);
   const competitionData = await getEditSessionByAddressOrId(editSessionIdOrAddress);
   const allOptedInUsers = competitionData?.optedInUsers ?? [];
+  const optedInUsersOnLeaderboard = allOptedInUsers.filter((u) =>
+    leaderboard.find((l) => l.username?.toLowerCase() === u.toLowerCase())
+  );
   const allProfiles = await getAllProfiles();
 
   const isActionInHackersData = searchParams.get("isActionInHackers");
@@ -49,7 +54,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     const pageData = searchParams.get("page");
     const comingPage = JSON.parse(pageData || "0") as number;
 
-    const whichAction = getUserAction(comingPage, message.button, allOptedInUsers.length);
+    const whichAction = getUserAction(comingPage, message.button, optedInUsersOnLeaderboard.length);
     if (whichAction === "prev") {
       page = comingPage - 1;
     } else if (whichAction === "next") {
@@ -76,22 +81,24 @@ export async function POST(req: NextRequest): Promise<Response> {
   const user = getUserFromMessage(message);
   const userToSend = encodeURIComponent(JSON.stringify(user));
 
-  const hackersProfiles = allOptedInUsers.slice(page * HACKERS_PER_PAGE, (page + 1) * HACKERS_PER_PAGE).map((username) => {
-    const profile = allProfiles.find((p) => p.username === username) as IHackerProfile;
-    return {
-      username: profile.username,
-      avatar: profile.avatar,
-    } as IProfileData;
-  });
+  const hackersProfiles = optedInUsersOnLeaderboard
+    .slice(page * HACKERS_PER_PAGE, (page + 1) * HACKERS_PER_PAGE)
+    .map((username) => {
+      const profile = allProfiles.find((p) => p.username === username) as IHackerProfile;
+      return {
+        username: profile.username,
+        avatar: profile.avatar,
+      } as IProfileData;
+    });
   const hackersProfilesToSend = encodeURIComponent(JSON.stringify(hackersProfiles));
-  const totalPages = Math.ceil(allOptedInUsers.length / HACKERS_PER_PAGE);
+  const totalPages = Math.ceil(optedInUsersOnLeaderboard.length / HACKERS_PER_PAGE);
 
   console.log("hackersProfiles -> ", hackersProfiles);
 
   const buttons = [
     page !== 0 ? "⬅️ Previous" : undefined,
     "Submit Vote 🗳️",
-    allOptedInUsers.length > (page + 1) * HACKERS_PER_PAGE ? "Next ➡️" : undefined,
+    optedInUsersOnLeaderboard.length > (page + 1) * HACKERS_PER_PAGE ? "Next ➡️" : undefined,
   ].filter((b) => b !== undefined);
 
   if (votedHacker && votedHacker !== "invalid") {

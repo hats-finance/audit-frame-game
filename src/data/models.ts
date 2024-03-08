@@ -36,3 +36,13 @@ export interface IProfileData {
   username: string;
   avatar?: string;
 }
+
+export type IAllTimeLeaderboard = {
+  username?: string;
+  address: string;
+  streak: number | undefined;
+  payouts: any[];
+  totalAmount: { tokens: number; usd: number };
+  totalSubmissions: number;
+  highestSeverity: string;
+}[];
