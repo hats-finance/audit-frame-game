@@ -8,7 +8,7 @@ import { getEditSessionIdOrAddressFromMessage } from "@/helpers/getEditSessionId
 import { getAllProfiles } from "@/data/requests/getAllProfiles";
 import { IHackerProfile } from "@hats.finance/shared";
 
-const HACKERS_PER_PAGE = 10;
+const HACKERS_PER_PAGE = 2;
 
 const getUserAction = (comingPage: number, buttonIdx: number, totalHackers: number): "prev" | "vote" | "next" => {
   const isFirstPage = comingPage === 0;
@@ -48,6 +48,22 @@ export async function POST(req: NextRequest): Promise<Response> {
   const isActionInHackers = JSON.parse(isActionInHackersData || "false") as boolean;
   console.log("isActionInHackers -> ", isActionInHackers);
 
+  let hackersProfiles = optedInUsersOnLeaderboard.map((username) => {
+    const profile = allProfiles.find((p) => p.username === username) as IHackerProfile;
+    const leaderboardStats = leaderboard.find((l) => l.username?.toLowerCase() === username.toLowerCase());
+
+    return {
+      idx: undefined,
+      username: profile.username,
+      avatar: profile.avatar,
+      highestSeverity: leaderboardStats?.highestSeverity,
+      totalAmountRewards: leaderboardStats?.totalAmount.usd,
+      totalFindings: leaderboardStats?.totalSubmissions,
+    } as IProfileData;
+  });
+  hackersProfiles.sort((a, b) => (b.totalAmountRewards ?? 0) - (a.totalAmountRewards ?? 0));
+  hackersProfiles = hackersProfiles.map((h, i) => ({ ...h, idx: i }));
+
   let votedHacker = undefined as IProfileData | "invalid" | undefined;
   let page = 0;
   if (isActionInHackers) {
@@ -55,22 +71,28 @@ export async function POST(req: NextRequest): Promise<Response> {
     const comingPage = JSON.parse(pageData || "0") as number;
 
     const whichAction = getUserAction(comingPage, message.button, optedInUsersOnLeaderboard.length);
+    console.log("whichAction -> ", whichAction);
     if (whichAction === "prev") {
       page = comingPage - 1;
     } else if (whichAction === "next") {
       page = comingPage + 1;
     } else {
       page = comingPage;
-      const votedUsername = message.input;
-      const votedHackerProfile = allProfiles.find((p) => p.username.toLowerCase() === votedUsername.toLowerCase());
-      if (votedHackerProfile) {
-        votedHacker = {
-          username: votedHackerProfile.username,
-          avatar: votedHackerProfile.avatar,
-        } as IProfileData;
-        // TODO: EXECUTE VOTE
-      } else {
+      const votedIdx = +message.input as number;
+      console.log("votedIdx -> ", votedIdx);
+      if (isNaN(votedIdx)) {
         votedHacker = "invalid";
+      } else {
+        const votedHackerProfile = hackersProfiles[votedIdx];
+        if (votedHackerProfile) {
+          votedHacker = {
+            username: votedHackerProfile.username,
+            avatar: votedHackerProfile.avatar,
+          } as IProfileData;
+          // TODO: EXECUTE VOTE
+        } else {
+          votedHacker = "invalid";
+        }
       }
     }
   }
@@ -81,24 +103,9 @@ export async function POST(req: NextRequest): Promise<Response> {
   const user = getUserFromMessage(message);
   const userToSend = encodeURIComponent(JSON.stringify(user));
 
-  const hackersProfiles = optedInUsersOnLeaderboard
-    .slice(page * HACKERS_PER_PAGE, (page + 1) * HACKERS_PER_PAGE)
-    .map((username) => {
-      const profile = allProfiles.find((p) => p.username === username) as IHackerProfile;
-      const leaderboardStats = leaderboard.find((l) => l.username?.toLowerCase() === username.toLowerCase());
-
-      return {
-        username: profile.username,
-        avatar: profile.avatar,
-        highestSeverity: leaderboardStats?.highestSeverity,
-        totalAmountRewards: leaderboardStats?.totalAmount.usd,
-        totalFindings: leaderboardStats?.totalSubmissions,
-      } satisfies IProfileData;
-    });
-  const hackersProfilesToSend = encodeURIComponent(JSON.stringify(hackersProfiles));
+  const hackersProfilesSliced = hackersProfiles.slice(page * HACKERS_PER_PAGE, (page + 1) * HACKERS_PER_PAGE);
+  const hackersProfilesToSend = encodeURIComponent(JSON.stringify(hackersProfilesSliced));
   const totalPages = Math.ceil(optedInUsersOnLeaderboard.length / HACKERS_PER_PAGE);
-
-  console.log("hackersProfiles -> ", hackersProfiles);
 
   const buttons = [
     page !== 0 ? "⬅️ Previous" : undefined,

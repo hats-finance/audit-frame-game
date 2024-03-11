@@ -31,7 +31,7 @@ export async function GET(request: Request) {
 
   const hackersData = searchParams.get("hackers");
   const hackers = JSON.parse(hackersData || "[]") as IProfileData[];
-  console.log(hackers);
+  // console.log(hackers);
 
   const HACKER_WIDTH = (900 * 0.9) / HACKERS_PER_ROW;
   const HACKER_HEIGHT = BIG_UI ? 310 : 190;
@@ -81,7 +81,21 @@ export async function GET(request: Request) {
             width: 900,
             margin: "auto",
           }}>
-          <div style={{ background: "yellow", height: HACKER_HEIGHT, width: HACKER_WIDTH, margin: `0 ${HACKER_MARGIN}px 40px` }}>
+          {hackers.map((hacker) => (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                background: "yellow",
+                height: HACKER_HEIGHT,
+                width: HACKER_WIDTH,
+                margin: `0 ${HACKER_MARGIN}px 40px`,
+              }}>
+              <p style={{ fontSize: "30px" }}>#{hacker.idx}</p>
+              <p style={{ fontSize: "20px" }}>{hacker.username}</p>
+            </div>
+          ))}
+          {/* <div style={{ background: "yellow", height: HACKER_HEIGHT, width: HACKER_WIDTH, margin: `0 ${HACKER_MARGIN}px 40px` }}>
             Test 1
           </div>
           <div style={{ background: "blue", height: HACKER_HEIGHT, width: HACKER_WIDTH, margin: `0 ${HACKER_MARGIN}px 40px` }}>
@@ -92,7 +106,7 @@ export async function GET(request: Request) {
           </div>
           <div style={{ background: "blue", height: HACKER_HEIGHT, width: HACKER_WIDTH, margin: `0 ${HACKER_MARGIN}px 40px` }}>
             Test 2
-          </div>
+          </div> */}
           {/* <div style={{ background: "yellow", height: HACKER_HEIGHT, width: HACKER_WIDTH, margin: `0 ${HACKER_MARGIN}px 40px` }}>
             Test 4
           </div>

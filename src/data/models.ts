@@ -38,6 +38,7 @@ export interface IProfileData {
   highestSeverity?: string;
   totalAmountRewards?: number;
   totalFindings?: number;
+  idx?: number;
 }
 
 export type IAllTimeLeaderboard = {
