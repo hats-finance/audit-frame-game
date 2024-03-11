@@ -35,10 +35,12 @@ export interface ICompetitionData {
 export interface IProfileData {
   username: string;
   avatar?: string;
+  github?: string;
   highestSeverity?: string;
   totalAmountRewards?: number;
   totalFindings?: number;
   idx?: number;
+  leaderboardPlace?: number;
 }
 
 export type IAllTimeLeaderboard = {

@@ -8,7 +8,7 @@ import { getEditSessionIdOrAddressFromMessage } from "@/helpers/getEditSessionId
 import { getAllProfiles } from "@/data/requests/getAllProfiles";
 import { IHackerProfile } from "@hats.finance/shared";
 
-const HACKERS_PER_PAGE = 2;
+const HACKERS_PER_PAGE = 4;
 
 const getUserAction = (comingPage: number, buttonIdx: number, totalHackers: number): "prev" | "vote" | "next" => {
   const isFirstPage = comingPage === 0;
@@ -56,13 +56,18 @@ export async function POST(req: NextRequest): Promise<Response> {
       idx: undefined,
       username: profile.username,
       avatar: profile.avatar,
+      github: profile.github_username,
       highestSeverity: leaderboardStats?.highestSeverity,
       totalAmountRewards: leaderboardStats?.totalAmount.usd,
       totalFindings: leaderboardStats?.totalSubmissions,
     } as IProfileData;
   });
   hackersProfiles.sort((a, b) => (b.totalAmountRewards ?? 0) - (a.totalAmountRewards ?? 0));
-  hackersProfiles = hackersProfiles.map((h, i) => ({ ...h, idx: i }));
+  hackersProfiles = hackersProfiles.map((h, i) => ({
+    ...h,
+    leaderboardPlace: leaderboard.findIndex((l) => l.username?.toLowerCase() === h.username.toLowerCase()) + 1,
+    idx: i + 1,
+  }));
 
   let votedHacker = undefined as IProfileData | "invalid" | undefined;
   let page = 0;
@@ -83,12 +88,9 @@ export async function POST(req: NextRequest): Promise<Response> {
       if (isNaN(votedIdx)) {
         votedHacker = "invalid";
       } else {
-        const votedHackerProfile = hackersProfiles[votedIdx];
+        const votedHackerProfile = hackersProfiles[votedIdx - 1];
         if (votedHackerProfile) {
-          votedHacker = {
-            username: votedHackerProfile.username,
-            avatar: votedHackerProfile.avatar,
-          } as IProfileData;
+          votedHacker = votedHackerProfile;
           // TODO: EXECUTE VOTE
         } else {
           votedHacker = "invalid";
@@ -124,7 +126,7 @@ export async function POST(req: NextRequest): Promise<Response> {
             <meta property="fc:frame:image:aspect_ratio" content="1:1" />
             <meta property="fc:frame:image" content="${config.hostURL}/game/voted?user=${userToSend}&hacker=${votedHackerToSend}" />
             <meta property="og:image" content="${config.hostURL}/game/voted?user=${userToSend}&hacker=${votedHackerToSend}" />
-            <meta property="fc:frame:button:1" content="Continue" />
+            <meta property="fc:frame:button:1" content="What's next ->" />
             <meta property="fc:frame:post_url" content="${config.hostURL}/api/voted" />
         </head>
     </html>
@@ -147,7 +149,7 @@ export async function POST(req: NextRequest): Promise<Response> {
           }/game/hackers?user=${userToSend}&hackers=${hackersProfilesToSend}&invalidVote=${
     votedHacker === "invalid"
   }&page=${page}&totalPages=${totalPages}" />
-          <meta property="fc:frame:input:text" content="Vote by entering the username" />
+          <meta property="fc:frame:input:text" content="Vote by entering # of the hacker" />
           ${buttons.map((b, i) => `<meta property="fc:frame:button:${i + 1}" content="${b}" />`).join("\n")}
           <meta property="fc:frame:post_url" content="${config.hostURL}/api/hackers?page=${page}&isActionInHackers=true" />
       </head>
