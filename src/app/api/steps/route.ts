@@ -17,6 +17,9 @@ export async function POST(req: NextRequest): Promise<Response> {
   const user = getUserFromMessage(message);
   const userToSend = encodeURIComponent(JSON.stringify(user));
 
+  // const hasUserLikedOrRecasted = user.liked || user.recasted;
+  const hasUserLikedOrRecasted = true;
+
   return new NextResponse(`
   <!DOCTYPE html>
   <html>
@@ -25,8 +28,10 @@ export async function POST(req: NextRequest): Promise<Response> {
           <meta property="fc:frame:image:aspect_ratio" content="1:1" />
           <meta property="fc:frame:image" content="${config.hostURL}/game/steps?user=${userToSend}" />
           <meta property="og:image" content="${config.hostURL}/game/steps?user=${userToSend}" />
-          <meta property="fc:frame:button:1" content="Go to game rules ->" />
-          <meta property="fc:frame:post_url" content="${config.hostURL}/api/rules" />
+          <meta property="fc:frame:button:1" content="${
+            !hasUserLikedOrRecasted ? "You need to like and/or recast first" : "Go to game rules ->"
+          }" />
+          <meta property="fc:frame:post_url" content="${!hasUserLikedOrRecasted ? "" : `${config.hostURL}/api/rules`}" />
       </head>
   </html>
 `);
