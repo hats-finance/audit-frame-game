@@ -1,5 +1,6 @@
 import { config } from "@/config/config";
 
+// const OPEN_VOTINGS_DEV = 60 * 30; // 30 minutes
 const OPEN_VOTINGS_DEV = 60 * 60 * 24 * 10; // 30 minutes
 const OPEN_VOTINGS_PROD = 60 * 60 * 24; // 24 hours
 
