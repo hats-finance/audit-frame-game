@@ -91,8 +91,8 @@ export async function GET(request: Request) {
           }}>
           <p style={{ color: "white", fontSize: "40px", marginBottom: -10 }}>on</p>
           <div style={{ display: "flex", alignItems: "center" }}>
-            {/* <img src={ipfsTransformUri(competition?.logo)} alt={competition?.name} width={100} height={100} /> */}
-            <img src={`${config.hostURL}/assets/images/placeholder.svg`} alt={competition?.name} width={100} height={100} />
+            <img src={ipfsTransformUri(competition?.logo)} alt={competition?.name} width={100} height={100} />
+            {/* <img src={`${config.hostURL}/assets/images/placeholder.svg`} alt={competition?.name} width={100} height={100} /> */}
             <p style={{ color: "white", fontSize: "26px", marginLeft: "20px" }}>{competition?.name}</p>
           </div>
           <p style={{ color: "white", fontSize: "45px", fontFamily: "IBMPlexSansBold" }}>Audit competition</p>
