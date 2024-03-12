@@ -91,7 +91,21 @@ export async function POST(req: NextRequest): Promise<Response> {
         const votedHackerProfile = hackersProfiles[votedIdx - 1];
         if (votedHackerProfile) {
           votedHacker = votedHackerProfile;
-          // TODO: EXECUTE VOTE
+          try {
+            const res = await fetch(`${config.apiURL}/games/vote/place`, {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ frameRequest: body, votedUsername: votedHacker.username }),
+            });
+            const resData = await res.json();
+            if (!resData.ok) votedHacker = "invalid";
+          } catch (error) {
+            console.log("Error voting -> ", error);
+            votedHacker = "invalid";
+          }
         } else {
           votedHacker = "invalid";
         }
