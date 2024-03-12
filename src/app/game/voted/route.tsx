@@ -10,6 +10,8 @@ import millify from "millify";
 export const runtime = "experimental-edge";
 
 export async function GET(request: Request) {
+  const HACKER_HEIGHT_HERE = HACKER_HEIGHT - 45;
+
   const IBMPlexMono = await fetch(new URL("/public/assets/IBMPlexMono-Regular.ttf", import.meta.url)).then((res) =>
     res.arrayBuffer()
   );
@@ -74,7 +76,7 @@ export async function GET(request: Request) {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            height: HACKER_HEIGHT,
+            height: HACKER_HEIGHT_HERE,
             width: HACKER_WIDTH,
             margin: `0 ${HACKER_MARGIN}px 40px`,
             color: "white",
@@ -82,14 +84,14 @@ export async function GET(request: Request) {
             fontFamily: "IBMPlexSans",
             background: "linear-gradient(135deg, #24E8C5, #F782FF, #816FFF)",
             position: "absolute",
-            top: "37%",
+            top: "40%",
             left: "28%",
           }}>
           <div
             style={{
               display: "flex",
               flexDirection: "column",
-              height: HACKER_HEIGHT - 4,
+              height: HACKER_HEIGHT_HERE - 4,
               width: HACKER_WIDTH - 4,
               background: COLORS.background,
               borderRadius: 10,
@@ -98,7 +100,7 @@ export async function GET(request: Request) {
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <div style={{ display: "flex", flexDirection: "column" }}>
                 <p style={{ fontSize: "40px", fontFamily: "IBMPlexSansBold", margin: 0 }}>#{votedHacker.idx}</p>
-                <p style={{ fontSize: "34px", fontFamily: "IBMPlexSansBold", marginBottom: 25, marginTop: 8 }}>
+                <p style={{ fontSize: "34px", fontFamily: "IBMPlexSansBold", marginBottom: 15, marginTop: 5 }}>
                   {votedHacker.username}
                 </p>
               </div>
@@ -115,25 +117,26 @@ export async function GET(request: Request) {
               </div>
             </div>
 
-            <p style={{ fontSize: "28px", margin: 0, display: "flex", alignItems: "center", marginBottom: 6 }}>
-              <span style={{ fontFamily: "IBMPlexSansBold", marginRight: 5 }}>{votedHacker.leaderboardPlace}st</span> on the
-              leaderboard
-            </p>
-            <p style={{ fontSize: "25px", margin: 0, marginBottom: 6, color: COLORS.greyText }}>
-              ${millify(votedHacker.totalAmountRewards ?? 0)} total earnings
-            </p>
-            <p style={{ fontSize: "25px", margin: 0, marginBottom: 5 }}>{votedHacker.totalFindings} issues found</p>
-            <div style={{ fontSize: "30px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <p
-                style={{
-                  color: "#24E8C5",
-                  fontFamily: "IBMPlexSansBold",
-                  marginRight: 5,
-                }}>
-                50
+            {votedHacker.leaderboardPlace !== 0 ? (
+              <p style={{ fontSize: "28px", margin: 0, display: "flex", alignItems: "center", marginBottom: 2 }}>
+                <span style={{ fontFamily: "IBMPlexSansBold", marginRight: 5 }}>{votedHacker.leaderboardPlace}st</span> on the
+                leaderboard
               </p>
-              votes
-            </div>
+            ) : (
+              <p style={{ fontSize: "28px", margin: 0, display: "flex", alignItems: "center", marginBottom: 2 }}>
+                not on the leaderboard
+              </p>
+            )}
+
+            {votedHacker.leaderboardPlace !== 0 && (
+              <p style={{ fontSize: "25px", margin: 0, marginBottom: 2, color: COLORS.greyText }}>
+                ${millify(votedHacker.totalAmountRewards ?? 0)} total earnings
+              </p>
+            )}
+
+            {votedHacker.leaderboardPlace !== 0 && (
+              <p style={{ fontSize: "25px", margin: 0, marginBottom: 5 }}>{votedHacker.totalFindings} issues found</p>
+            )}
           </div>
         </div>
 
