@@ -39,17 +39,18 @@ export async function POST(req: NextRequest): Promise<Response> {
   const editSessionIdOrAddress = getEditSessionIdOrAddressFromMessage(message);
   const competitionData = await getEditSessionByAddressOrId(editSessionIdOrAddress);
   const allOptedInUsers = competitionData?.optedInUsers ?? [];
-  const optedInUsersOnLeaderboard = allOptedInUsers.filter((u) =>
-    leaderboard.find((l) => l.username?.toLowerCase() === u.toLowerCase())
-  );
+  const allFarcasterVoters = competitionData?.farcasterVoters ?? [];
+  // const optedInUsersOnLeaderboard = allOptedInUsers.filter((u) =>
+  //   leaderboard.find((l) => l.username?.toLowerCase() === u.toLowerCase())
+  // );
   const allProfiles = await getAllProfiles();
 
   const isActionInHackersData = searchParams.get("isActionInHackers");
   const isActionInHackers = JSON.parse(isActionInHackersData || "false") as boolean;
   console.log("isActionInHackers -> ", isActionInHackers);
 
-  let hackersProfiles = optedInUsersOnLeaderboard.map((username) => {
-    const profile = allProfiles.find((p) => p.username === username) as IHackerProfile;
+  let hackersProfiles = allOptedInUsers.map((username) => {
+    const profile = allProfiles.find((p) => p.username.toLowerCase() === username.toLowerCase()) as IHackerProfile;
     const leaderboardStats = leaderboard.find((l) => l.username?.toLowerCase() === username.toLowerCase());
 
     return {
@@ -60,6 +61,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       highestSeverity: leaderboardStats?.highestSeverity,
       totalAmountRewards: leaderboardStats?.totalAmount.usd,
       totalFindings: leaderboardStats?.totalSubmissions,
+      voters: allFarcasterVoters.filter((v) => v.vote.toLowerCase() === profile.username.toLowerCase()).length,
     } as IProfileData;
   });
   hackersProfiles.sort((a, b) => (b.totalAmountRewards ?? 0) - (a.totalAmountRewards ?? 0));
@@ -75,7 +77,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     const pageData = searchParams.get("page");
     const comingPage = JSON.parse(pageData || "0") as number;
 
-    const whichAction = getUserAction(comingPage, message.button, optedInUsersOnLeaderboard.length);
+    const whichAction = getUserAction(comingPage, message.button, allOptedInUsers.length);
     console.log("whichAction -> ", whichAction);
     if (whichAction === "prev") {
       page = comingPage - 1;
@@ -121,12 +123,12 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   const hackersProfilesSliced = hackersProfiles.slice(page * HACKERS_PER_PAGE, (page + 1) * HACKERS_PER_PAGE);
   const hackersProfilesToSend = encodeURIComponent(JSON.stringify(hackersProfilesSliced));
-  const totalPages = Math.ceil(optedInUsersOnLeaderboard.length / HACKERS_PER_PAGE);
+  const totalPages = Math.ceil(allOptedInUsers.length / HACKERS_PER_PAGE);
 
   const buttons = [
     page !== 0 ? "⬅️ Previous" : undefined,
     "Submit Vote 🗳️",
-    optedInUsersOnLeaderboard.length > (page + 1) * HACKERS_PER_PAGE ? "Next ➡️" : undefined,
+    allOptedInUsers.length > (page + 1) * HACKERS_PER_PAGE ? "Next ➡️" : undefined,
   ].filter((b) => b !== undefined);
 
   if (votedHacker && votedHacker !== "invalid") {

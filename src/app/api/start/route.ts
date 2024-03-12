@@ -31,12 +31,12 @@ export async function POST(req: NextRequest): Promise<Response> {
     const editSessionIdOrAddress = getEditSessionIdOrAddressFromMessage(message);
     const competitionData = await getEditSessionByAddressOrId(editSessionIdOrAddress);
     const allOptedInUsers = competitionData?.optedInUsers ?? [];
-    const optedInUsersOnLeaderboard = allOptedInUsers.filter((u) =>
-      leaderboard.find((l) => l.username?.toLowerCase() === u.toLowerCase())
-    );
+    // const optedInUsersOnLeaderboard = allOptedInUsers.filter((u) =>
+    //   leaderboard.find((l) => l.username?.toLowerCase() === u.toLowerCase())
+    // );
     const allProfiles = await getAllProfiles();
 
-    let hackersProfiles = optedInUsersOnLeaderboard.map((username) => {
+    let hackersProfiles = allOptedInUsers.map((username) => {
       const profile = allProfiles.find((p) => p.username === username) as IHackerProfile;
       const leaderboardStats = leaderboard.find((l) => l.username?.toLowerCase() === username.toLowerCase());
 
