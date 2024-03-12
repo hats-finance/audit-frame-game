@@ -17,6 +17,7 @@ export interface IEditSession {
   nftAssetsIpfsHash?: string;
   auditTriedToForkCount?: number;
   optedInUsers?: string[];
+  farcasterVoters?: IFarcastVoter[];
 }
 
 export interface IFarcasterUser {
@@ -24,6 +25,13 @@ export interface IFarcasterUser {
   hatsPoints: number;
   liked: boolean;
   recasted: boolean;
+}
+
+export interface IFarcastVoter {
+  fid: number;
+  points: number;
+  vote: string;
+  castHash: string;
 }
 
 export interface ICompetitionData {
@@ -41,6 +49,7 @@ export interface IProfileData {
   totalFindings?: number;
   idx?: number;
   leaderboardPlace?: number;
+  voters?: number;
 }
 
 export type IAllTimeLeaderboard = {
