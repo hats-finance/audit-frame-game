@@ -166,9 +166,9 @@ export async function GET(request: Request) {
                         fontFamily: "IBMPlexSansBold",
                         marginRight: 5,
                       }}>
-                      {hacker.voters ?? 0}
+                      {hacker.votedPoints ?? 0}
                     </p>
-                    votes
+                    points
                   </div>
                 </div>
               </div>

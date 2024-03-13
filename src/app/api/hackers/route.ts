@@ -61,7 +61,9 @@ export async function POST(req: NextRequest): Promise<Response> {
       highestSeverity: leaderboardStats?.highestSeverity,
       totalAmountRewards: leaderboardStats?.totalAmount.usd,
       totalFindings: leaderboardStats?.totalSubmissions,
-      voters: allFarcasterVoters.filter((v) => v.vote.toLowerCase() === profile.username.toLowerCase()).length,
+      votedPoints: allFarcasterVoters
+        .filter((v) => v.vote.toLowerCase() === profile.username.toLowerCase())
+        .reduce((acc, v) => acc + v.points, 0),
     } as IProfileData;
   });
   hackersProfiles.sort((a, b) => (b.totalAmountRewards ?? 0) - (a.totalAmountRewards ?? 0));

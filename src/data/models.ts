@@ -67,7 +67,7 @@ export interface IProfileData {
   totalFindings?: number;
   idx?: number;
   leaderboardPlace?: number;
-  voters?: number;
+  votedPoints?: number;
 }
 
 export type IAllTimeLeaderboard = {
