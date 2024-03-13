@@ -17,7 +17,7 @@ export interface IEditSession {
   nftAssetsIpfsHash?: string;
   auditTriedToForkCount?: number;
   optedInUsers?: string[];
-  farcasterVoters?: IFarcastVoter[];
+  farcasterVoters?: IFarcasterVoter[];
 }
 
 export interface IFarcasterUser {
@@ -27,7 +27,25 @@ export interface IFarcasterUser {
   recasted: boolean;
 }
 
-export interface IFarcastVoter {
+export interface IFarcasterUserData {
+  username: string | undefined;
+  farcasterId: number | undefined;
+  hatsPoints: number;
+  hatsPointsLogs: IHATPointsLog[];
+}
+
+export interface IHATPointsLog {
+  date: Date;
+  action: string;
+  points: number;
+  metadata: IPointsLogMetadata;
+}
+
+export interface IPointsLogMetadata {
+  vaultAddress: string | undefined;
+}
+
+export interface IFarcasterVoter {
   fid: number;
   points: number;
   vote: string;

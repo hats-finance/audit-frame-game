@@ -19,8 +19,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     throw new Error("Invalid frame request");
   }
 
-  // TODO: Get HATS Points
-  const user = getUserFromMessage(message);
+  const user = await getUserFromMessage(message);
   const userToSend = encodeURIComponent(JSON.stringify(user));
 
   // Check if user already voted

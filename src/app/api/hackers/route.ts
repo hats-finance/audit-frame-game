@@ -117,8 +117,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   console.log("Page -> ", page);
 
-  // TODO: Get HATS Points
-  const user = getUserFromMessage(message);
+  const user = await getUserFromMessage(message);
   const userToSend = encodeURIComponent(JSON.stringify(user));
 
   const hackersProfilesSliced = hackersProfiles.slice(page * HACKERS_PER_PAGE, (page + 1) * HACKERS_PER_PAGE);
