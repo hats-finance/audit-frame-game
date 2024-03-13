@@ -47,7 +47,6 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   const isActionInHackersData = searchParams.get("isActionInHackers");
   const isActionInHackers = JSON.parse(isActionInHackersData || "false") as boolean;
-  console.log("isActionInHackers -> ", isActionInHackers);
 
   let hackersProfiles = allOptedInUsers.map((username) => {
     const profile = allProfiles.find((p) => p.username.toLowerCase() === username.toLowerCase()) as IHackerProfile;
@@ -80,7 +79,6 @@ export async function POST(req: NextRequest): Promise<Response> {
     const comingPage = JSON.parse(pageData || "0") as number;
 
     const whichAction = getUserAction(comingPage, message.button, allOptedInUsers.length);
-    console.log("whichAction -> ", whichAction);
     if (whichAction === "prev") {
       page = comingPage - 1;
     } else if (whichAction === "next") {
@@ -88,7 +86,6 @@ export async function POST(req: NextRequest): Promise<Response> {
     } else {
       page = comingPage;
       const votedIdx = +message.input as number;
-      console.log("votedIdx -> ", votedIdx);
       if (isNaN(votedIdx)) {
         votedHacker = "invalid";
       } else {
@@ -116,8 +113,6 @@ export async function POST(req: NextRequest): Promise<Response> {
       }
     }
   }
-
-  console.log("Page -> ", page);
 
   const user = await getUserFromMessage(message);
   const userToSend = encodeURIComponent(JSON.stringify(user));

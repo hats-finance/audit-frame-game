@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: IProps): Promise<Metadata> {
 
   const statusToButton: { [K in ICompetitionStatus]: string } = {
     coming: "Coming soon!",
-    voting: "Login",
+    voting: "Start game!",
     "in-progress": "Competition in progress. Wait for results.",
     invalid: "Invalid competition",
     ended: "Competition ended. Wait for results.",

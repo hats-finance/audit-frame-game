@@ -30,12 +30,9 @@ export async function GET(request: Request) {
 
   const isInvalidVoteData = searchParams.get("invalidVote");
   const isInvalidVote = JSON.parse(isInvalidVoteData || "false") as boolean;
-  console.log("isInvalidVote -> ", isInvalidVote);
 
   const hackersData = searchParams.get("hackers");
   const hackers = JSON.parse(hackersData || "[]") as IProfileData[];
-
-  console.log("hackers -> ", hackers);
 
   return new ImageResponse(
     (

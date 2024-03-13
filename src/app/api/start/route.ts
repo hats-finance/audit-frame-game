@@ -82,10 +82,10 @@ export async function POST(req: NextRequest): Promise<Response> {
       <head>
           <meta property="fc:frame" content="vNext" />
           <meta property="fc:frame:image:aspect_ratio" content="1:1" />
-          <meta property="fc:frame:image" content="${config.hostURL}/game/home?user=${userToSend}" />
-          <meta property="og:image" content="${config.hostURL}/game/home?user=${userToSend}" />
-          <meta property="fc:frame:button:1" content="Start game" />
-          <meta property="fc:frame:post_url" content="${config.hostURL}/api/steps" />
+          <meta property="fc:frame:image" content="${config.hostURL}/game/steps?user=${userToSend}" />
+          <meta property="og:image" content="${config.hostURL}/game/steps?user=${userToSend}" />
+          <meta property="fc:frame:button:1" content="Go to rules ->" />
+          <meta property="fc:frame:post_url" content="${config.hostURL}/api/rules" />
       </head>
   </html>
 `);

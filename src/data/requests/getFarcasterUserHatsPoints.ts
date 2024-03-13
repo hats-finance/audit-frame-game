@@ -8,7 +8,6 @@ export const getFarcasterUserHatsPoints = async (fid: number): Promise<number> =
       | undefined;
     return user?.hatsPoints ?? 0;
   } catch (error) {
-    console.log(error);
     return 0;
   }
 };

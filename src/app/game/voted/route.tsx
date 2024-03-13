@@ -27,8 +27,6 @@ export async function GET(request: Request) {
   const votedHackerData = searchParams.get("hacker");
   const votedHacker = JSON.parse(votedHackerData || "undefined") as IProfileData | undefined;
 
-  console.log("votedHacker -> ", votedHacker);
-
   const farcasterUserData = searchParams.get("user");
   const farcasterUser = JSON.parse(farcasterUserData || "undefined") as IFarcasterUser | undefined;
 
