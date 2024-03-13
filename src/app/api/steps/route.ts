@@ -28,7 +28,7 @@ export async function POST(req: NextRequest): Promise<Response> {
           <meta property="fc:frame:image" content="${config.hostURL}/game/steps?user=${userToSend}" />
           <meta property="og:image" content="${config.hostURL}/game/steps?user=${userToSend}" />
           <meta property="fc:frame:button:1" content="${
-            !hasUserLikedOrRecasted ? "You need to like and/or recast first" : "Go to game rules ->"
+            !hasUserLikedOrRecasted ? "You need to like and/or recast first" : "Go to game rules ➡️"
           }" />
           <meta property="fc:frame:post_url" content="${!hasUserLikedOrRecasted ? "" : `${config.hostURL}/api/rules`}" />
       </head>

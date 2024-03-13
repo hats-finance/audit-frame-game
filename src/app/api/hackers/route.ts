@@ -138,7 +138,7 @@ export async function POST(req: NextRequest): Promise<Response> {
             <meta property="fc:frame:image:aspect_ratio" content="1:1" />
             <meta property="fc:frame:image" content="${config.hostURL}/game/voted?user=${userToSend}&hacker=${votedHackerToSend}" />
             <meta property="og:image" content="${config.hostURL}/game/voted?user=${userToSend}&hacker=${votedHackerToSend}" />
-            <meta property="fc:frame:button:1" content="What's next ->" />
+            <meta property="fc:frame:button:1" content="What's next ➡️" />
             <meta property="fc:frame:post_url" content="${config.hostURL}/api/voted" />
         </head>
     </html>
