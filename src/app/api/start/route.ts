@@ -21,6 +21,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   const user = await getUserFromMessage(message);
   const userToSend = encodeURIComponent(JSON.stringify(user));
+  const hasUserLikedOrRecasted = user.liked || user.recasted;
 
   // Check if user already voted
   const userVote = await getUserVote(body);
@@ -69,8 +70,8 @@ export async function POST(req: NextRequest): Promise<Response> {
             <meta property="fc:frame:image:aspect_ratio" content="1:1" />
             <meta property="fc:frame:image" content="${config.hostURL}/game/voted?user=${userToSend}&hacker=${votedHackerToSend}" />
             <meta property="og:image" content="${config.hostURL}/game/voted?user=${userToSend}&hacker=${votedHackerToSend}" />
-            <meta property="fc:frame:button:1" content="What's next ➡️" />
-            <meta property="fc:frame:post_url" content="${config.hostURL}/api/voted" />
+            <meta property="fc:frame:button:1" content="See Real-Time Votes ➡️" />
+            <meta property="fc:frame:post_url" content="${config.hostURL}/api/results" />
         </head>
     </html>
   `);
@@ -84,8 +85,10 @@ export async function POST(req: NextRequest): Promise<Response> {
           <meta property="fc:frame:image:aspect_ratio" content="1:1" />
           <meta property="fc:frame:image" content="${config.hostURL}/game/steps?user=${userToSend}" />
           <meta property="og:image" content="${config.hostURL}/game/steps?user=${userToSend}" />
-          <meta property="fc:frame:button:1" content="Go to rules ➡️" />
-          <meta property="fc:frame:post_url" content="${config.hostURL}/api/rules" />
+          <meta property="fc:frame:button:1" content="${
+            !hasUserLikedOrRecasted ? "You need to like and/or recast first" : "Go to game rules ➡️"
+          }" />
+          <meta property="fc:frame:post_url" content="${!hasUserLikedOrRecasted ? "" : `${config.hostURL}/api/rules`}" />
       </head>
   </html>
 `);

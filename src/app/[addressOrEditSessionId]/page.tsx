@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: IProps): Promise<Metadata> {
   const statusToPost: { [K in ICompetitionStatus]: string } = {
     coming: "",
     voting: `${config.hostURL}/api/start`,
-    // voting: `${config.hostURL}/api/voted`,
+    // voting: `${config.hostURL}/api/results`,
     "in-progress": "",
     invalid: "",
     ended: "",

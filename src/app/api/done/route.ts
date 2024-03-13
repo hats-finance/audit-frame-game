@@ -33,7 +33,7 @@ export async function POST(req: NextRequest): Promise<Response> {
           <meta property="og:image" content="${config.hostURL}/game/done?user=${userToSend}&voters=${voters}" />
           <meta property="fc:frame:button:1" content="Join the Audit F(r)ame Game Channel" />
           <meta property="fc:frame:button:1:action" content="link" />
-          <meta property="fc:frame:button:1:target" content="https://discord.gg/nYvMKTzqnX" />
+          <meta property="fc:frame:button:1:target" content="https://warpcast.com/~/channel/auditgames" />
       </head>
   </html>
 `);

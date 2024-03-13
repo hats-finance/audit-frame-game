@@ -68,6 +68,7 @@ export interface IProfileData {
   idx?: number;
   leaderboardPlace?: number;
   votedPoints?: number;
+  voters?: number;
 }
 
 export type IAllTimeLeaderboard = {
