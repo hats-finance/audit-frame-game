@@ -60,5 +60,5 @@ export async function generateMetadata({ params }: IProps): Promise<Metadata> {
 }
 
 export default function Home() {
-  return <main className={styles.main}>Hats Finance - Audit Frame Game ({config.env})</main>;
+  return <main className={styles.main}>Hats Finance - Audit Frame Game</main>;
 }
