@@ -34,7 +34,7 @@ export async function GET(request: Request) {
         />
         {/* POINTS */}
         <p style={{ color: "white", fontSize: "30px", position: "absolute", top: 10, right: 40 }}>
-          TEST HATs points: {farcasterUser?.hatsPoints ?? 0}
+          HATs points: {farcasterUser?.hatsPoints ?? 0}
         </p>
 
         {/* RESULTS */}
