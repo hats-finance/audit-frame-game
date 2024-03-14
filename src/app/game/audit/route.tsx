@@ -17,10 +17,10 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
   const farcasterUserData = searchParams.get("user");
-  const farcasterUser = JSON.parse(farcasterUserData || "undefined") as IFarcasterUser | undefined;
+  const farcasterUser = JSON.parse(farcasterUserData || "null") as IFarcasterUser | undefined;
 
   const competitionData = searchParams.get("competition");
-  const competition = JSON.parse(competitionData || "undefined") as ICompetitionData | undefined;
+  const competition = JSON.parse(competitionData || "null") as ICompetitionData | undefined;
 
   if (!competition) {
     return new ImageResponse(
@@ -73,9 +73,7 @@ export async function GET(request: Request) {
               {competition?.optedInUsers}
             </p>
           </div>
-          <p style={{ color: "white", fontSize: "45px", marginTop: -20, fontFamily: "IBMPlexSansBold" }}>
-            White Hat Hackers Opted-In
-          </p>
+          <p style={{ color: "white", fontSize: "45px", marginTop: -20, fontFamily: "IBMPlexSansBold" }}>Opted-In Auditors</p>
         </div>
 
         {/* COMPETITION DETAILS */}

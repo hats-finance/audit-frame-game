@@ -15,7 +15,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
   const farcasterUserData = searchParams.get("user");
-  const farcasterUser = JSON.parse(farcasterUserData || "undefined") as IFarcasterUser | undefined;
+  const farcasterUser = JSON.parse(farcasterUserData || "null") as IFarcasterUser | undefined;
 
   const voters = JSON.parse(searchParams.get("voters") || "0") as number;
 

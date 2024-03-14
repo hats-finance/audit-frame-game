@@ -14,8 +14,11 @@ const appendZero = (value: number) => (value < 10 ? `0${value}` : `${value}`);
 export const getCompetitionCountdown = (editSession: IEditSession | null): ICompetitionCountdown | undefined => {
   if (!editSession) return undefined;
 
+  const competitionDescription = editSession.description ?? editSession.editedDescription;
+  if (!competitionDescription) return undefined;
+
   const competitionStatus = getCompetitionStatus(editSession);
-  const competitionStartTime = (editSession.description ?? editSession.editedDescription)["project-metadata"].starttime;
+  const competitionStartTime = competitionDescription["project-metadata"].starttime;
   if (competitionStatus === "invalid" || competitionStatus === "ended" || competitionStatus === "in-progress") return undefined;
   if (!competitionStartTime) return undefined;
 

@@ -13,7 +13,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
   const farcasterUserData = searchParams.get("user");
-  const farcasterUser = JSON.parse(farcasterUserData || "undefined") as IFarcasterUser | undefined;
+  const farcasterUser = JSON.parse(farcasterUserData || "null") as IFarcasterUser | undefined;
 
   return new ImageResponse(
     (

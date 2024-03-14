@@ -15,8 +15,8 @@ export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url);
 
-  const frameImage = (searchParams.get("frameImage") || "") as string;
-  const competitionCountdown = JSON.parse(searchParams.get("countdown") || "undefined") as ICompetitionCountdown | undefined;
+  const frameImage = (searchParams.get("frameImage") || "null") as string;
+  const competitionCountdown = JSON.parse(searchParams.get("countdown") || "null") as ICompetitionCountdown | undefined;
   const competitionStatus = searchParams.get("status") as ICompetitionStatus;
 
   return new ImageResponse(
@@ -29,7 +29,7 @@ export async function GET(request: Request) {
 
         {/* COUNTDOWN */}
         {(competitionStatus === "coming" || competitionStatus === "voting") && !!competitionCountdown && (
-          <div style={{ display: "flex", alignItems: "center", position: "absolute", bottom: 70 }}>
+          <div style={{ display: "flex", alignItems: "center", position: "absolute", bottom: 90 }}>
             <p
               style={{
                 fontSize: "45px",
@@ -39,7 +39,7 @@ export async function GET(request: Request) {
                 fontFamily: "IBMPlexSansBold",
                 margin: 0,
               }}>
-              {competitionStatus === "coming" ? "You can vote in" : "Vote now"}
+              {competitionStatus === "coming" ? "You can vote in" : "Votings ends in"}
             </p>
             <div
               style={{

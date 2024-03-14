@@ -26,7 +26,7 @@ export async function GET(request: Request) {
   const totalPages = JSON.parse(searchParams.get("totalPages") || "0") as number;
 
   const farcasterUserData = searchParams.get("user");
-  const farcasterUser = JSON.parse(farcasterUserData || "undefined") as IFarcasterUser | undefined;
+  const farcasterUser = JSON.parse(farcasterUserData || "null") as IFarcasterUser | undefined;
 
   const isInvalidVoteData = searchParams.get("invalidVote");
   const isInvalidVote = JSON.parse(isInvalidVoteData || "false") as boolean;
@@ -63,7 +63,7 @@ export async function GET(request: Request) {
             right: "50%",
             transform: "translateX(50%)",
           }}>
-          {isInvalidVote ? "Invalid Vote, try again." : "Competing White Hats"}
+          {isInvalidVote ? "Invalid Vote, try again." : "Competing Auditors"}
         </p>
 
         <div

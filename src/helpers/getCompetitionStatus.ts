@@ -6,8 +6,11 @@ export type ICompetitionStatus = "voting" | "in-progress" | "ended" | "coming" |
 export const getCompetitionStatus = (editSession: IEditSession | null): ICompetitionStatus => {
   if (!editSession) return "invalid";
 
-  const startTime = (editSession.description ?? editSession.editedDescription)["project-metadata"].starttime;
-  const endTime = (editSession.description ?? editSession.editedDescription)["project-metadata"].endtime;
+  const competitionDescription = editSession.description ?? editSession.editedDescription;
+  if (!competitionDescription) return "invalid";
+
+  const startTime = competitionDescription["project-metadata"].starttime;
+  const endTime = competitionDescription["project-metadata"].endtime;
   if (!startTime || !endTime) return "invalid";
 
   const now = Date.now() / 1000;

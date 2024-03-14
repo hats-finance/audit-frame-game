@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: IProps): Promise<Metadata> {
     ended: "Competition ended. Wait for results.",
   };
 
-  const countdownToSend = encodeURIComponent(JSON.stringify(competitionCountDown));
+  const countdownToSend = encodeURIComponent(JSON.stringify(competitionCountDown ?? null));
 
   return {
     title: consts.title,
