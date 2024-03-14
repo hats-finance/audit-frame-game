@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { consts } from "@/consts/wording";
 import { getEditSessionByAddressOrId } from "@/data/requests/getEditSessionByAddressOrId";
 import { ICompetitionStatus, getCompetitionStatus } from "@/helpers/getCompetitionStatus";
+import { getCompetitionCountdown } from "@/helpers/getCompetitionCountdown";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,7 @@ export async function generateMetadata({ params }: IProps): Promise<Metadata> {
   const { addressOrEditSessionId } = params;
   const editSession = await getEditSessionByAddressOrId(addressOrEditSessionId);
   const competitionStatus = getCompetitionStatus(editSession);
+  const competitionCountDown = getCompetitionCountdown(editSession);
 
   const statusToFrame: { [K in ICompetitionStatus]: string } = {
     coming: "coming-competition",
@@ -41,6 +43,8 @@ export async function generateMetadata({ params }: IProps): Promise<Metadata> {
     ended: "Competition ended. Wait for results.",
   };
 
+  const countdownToSend = encodeURIComponent(JSON.stringify(competitionCountDown));
+
   return {
     title: consts.title,
     description: consts.description,
@@ -52,7 +56,7 @@ export async function generateMetadata({ params }: IProps): Promise<Metadata> {
     other: {
       "fc:frame": "vNext",
       "fc:frame:image:aspect_ratio": "1:1",
-      "fc:frame:image": `${config.hostURL}/assets/images/${statusToFrame[competitionStatus]}.jpg`,
+      "fc:frame:image": `${config.hostURL}/game/start?frameImage=${statusToFrame[competitionStatus]}&status=${competitionStatus}&countdown=${countdownToSend}                                                                                    `,
       "fc:frame:post_url": statusToPost[competitionStatus],
       "fc:frame:button:1": statusToButton[competitionStatus],
     },
