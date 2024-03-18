@@ -19,6 +19,8 @@ export async function GET(request: Request) {
   const competitionCountdown = JSON.parse(searchParams.get("countdown") || "null") as ICompetitionCountdown | undefined;
   const competitionStatus = searchParams.get("status") as ICompetitionStatus;
 
+  console.log(competitionCountdown);
+
   return new ImageResponse(
     (
       <div style={{ display: "flex", position: "relative", width: 1000, height: 1000, justifyContent: "center" }}>
@@ -51,7 +53,7 @@ export async function GET(request: Request) {
                 fontSize: "35px",
                 fontFamily: "IBMPlexMono",
               }}>
-              {competitionCountdown.days ? (
+              {competitionCountdown.days && +competitionCountdown.days !== 0 ? (
                 <p style={{ margin: 0 }}>
                   {competitionCountdown.days} {+competitionCountdown.days === 1 ? "day" : "days"}
                 </p>
