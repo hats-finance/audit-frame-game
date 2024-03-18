@@ -19,7 +19,8 @@ export async function generateMetadata({ params }: IProps): Promise<Metadata> {
   const competitionCountDown = getCompetitionCountdown(editSession);
 
   const statusToFrame: { [K in ICompetitionStatus]: string } = {
-    coming: "coming-competition",
+    // coming: "coming-competition",
+    coming: "home",
     voting: "home",
     "in-progress": "inprogress-competition",
     invalid: "invalid-competition",
@@ -36,7 +37,8 @@ export async function generateMetadata({ params }: IProps): Promise<Metadata> {
   };
 
   const statusToButton: { [K in ICompetitionStatus]: string } = {
-    coming: "Coming soon!",
+    // coming: "Coming soon!",
+    coming: "Let's go!",
     voting: "Start game!",
     "in-progress": "Competition in progress. Wait for results.",
     invalid: "Invalid competition",
