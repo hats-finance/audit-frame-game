@@ -6,6 +6,7 @@ import { COLORS } from "@/consts/colors";
 import { ipfsTransformUri } from "@/helpers/ipfsTransformUri";
 import { config } from "@/config/config";
 import { HACKER_HEIGHT, HACKER_MARGIN, HACKER_WIDTH } from "@/consts/hackersUI";
+import { getNumberOrdinal } from "@/helpers/getNumberOrdinal";
 
 export const runtime = "experimental-edge";
 
@@ -127,8 +128,10 @@ export async function GET(request: Request) {
 
                   {hacker.leaderboardPlace !== 0 ? (
                     <p style={{ fontSize: "28px", margin: 0, display: "flex", alignItems: "center", marginBottom: 2 }}>
-                      <span style={{ fontFamily: "IBMPlexSansBold", marginRight: 5 }}>{hacker.leaderboardPlace}st</span> on the
-                      leaderboard
+                      <span style={{ fontFamily: "IBMPlexSansBold", marginRight: 5 }}>
+                        {getNumberOrdinal(hacker.leaderboardPlace)}
+                      </span>{" "}
+                      on the leaderboard
                     </p>
                   ) : (
                     <p style={{ fontSize: "28px", margin: 0, display: "flex", alignItems: "center", marginBottom: 2 }}>
