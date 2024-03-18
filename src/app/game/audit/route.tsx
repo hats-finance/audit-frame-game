@@ -59,7 +59,7 @@ export async function GET(request: Request) {
             alignItems: "center",
             position: "absolute",
             top: "12%",
-            left: "20%",
+            width: "100%",
           }}>
           <div style={{ display: "flex", flexDirection: "column", position: "relative" }}>
             <p
