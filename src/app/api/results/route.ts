@@ -8,8 +8,6 @@ import { IHackerProfile } from "@hats.finance/shared";
 import { getAllProfiles } from "@/data/requests/getAllProfiles";
 import { IProfileData } from "@/data/models";
 
-const HACKER_TO_SHOW = 5;
-
 export async function POST(req: NextRequest): Promise<Response> {
   const body: FrameRequest = await req.json();
 
@@ -50,7 +48,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   hackersProfiles = hackersProfiles.filter((p) => p.votedPoints && p.votedPoints > 0);
   hackersProfiles.sort((a, b) => (b.votedPoints ?? 0) - (a.votedPoints ?? 0));
 
-  const profilesToSend = encodeURIComponent(JSON.stringify(hackersProfiles.slice(0, HACKER_TO_SHOW)));
+  const profilesToSend = encodeURIComponent(JSON.stringify(hackersProfiles.slice(0, 5)));
 
   return new NextResponse(`
   <!DOCTYPE html>

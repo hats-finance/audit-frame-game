@@ -21,6 +21,7 @@ export const getEditSessionByAddressOrId = async (addressOrEditSessionId: string
       return editSession;
     }
   } catch (error) {
+    console.log("uyy");
     console.log(error);
     return null;
   }

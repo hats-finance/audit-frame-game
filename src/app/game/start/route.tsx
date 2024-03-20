@@ -2,6 +2,8 @@ import { ImageResponse } from "next/og";
 import { config } from "@/config/config";
 import { ICompetitionCountdown } from "@/helpers/getCompetitionCountdown";
 import { ICompetitionStatus } from "@/helpers/getCompetitionStatus";
+import { IFarcasterUser } from "@/data/models";
+import { getGamePoints } from "@/helpers/getGamePoints";
 
 export const runtime = "experimental-edge";
 
@@ -15,11 +17,12 @@ export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url);
 
+  const farcasterUserData = searchParams.get("user");
+  const farcasterUser = JSON.parse(farcasterUserData || "null") as IFarcasterUser | undefined;
+
   const frameImage = (searchParams.get("frameImage") || "null") as string;
   const competitionCountdown = JSON.parse(searchParams.get("countdown") || "null") as ICompetitionCountdown | undefined;
   const competitionStatus = searchParams.get("status") as ICompetitionStatus;
-
-  console.log(competitionCountdown);
 
   return new ImageResponse(
     (
@@ -28,6 +31,12 @@ export async function GET(request: Request) {
           style={{ position: "absolute", top: 0, left: 0, width: 1000, height: 1000 }}
           src={`${config.hostURL}/assets/images/${frameImage}.jpg`}
         />
+        <p style={{ color: "white", fontSize: "30px", position: "absolute", top: 10, left: 40 }}>
+          Game points: {getGamePoints(farcasterUser)}
+        </p>
+        <p style={{ color: "white", fontSize: "30px", position: "absolute", top: 10, right: 40 }}>
+          HATs points: {farcasterUser?.hatsPoints ?? 0}
+        </p>
 
         {/* COUNTDOWN */}
         {(competitionStatus === "coming" || competitionStatus === "voting") && !!competitionCountdown && (
