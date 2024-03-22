@@ -40,7 +40,7 @@ export async function POST(req: NextRequest): Promise<Response> {
           <meta property="fc:frame:image" content="${config.hostURL}/game/audit?user=${userToSend}&competition=${competition}" />
           <meta property="og:image" content="${config.hostURL}/game/audit?user=${userToSend}&competition=${competition}" />
           <meta property="fc:frame:button:1" content="Continue to Pick and Vote ➡️" />
-          <meta property="fc:frame:post_url" content="" />
+          <meta property="fc:frame:post_url" content="${config.hostURL}/api/hackers" />
       </head>
   </html>
 `);
