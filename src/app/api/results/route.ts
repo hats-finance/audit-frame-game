@@ -7,6 +7,7 @@ import { getEditSessionByAddressOrId } from "@/data/requests/getEditSessionByAdd
 import { IHackerProfile } from "@hats.finance/shared";
 import { getAllProfiles } from "@/data/requests/getAllProfiles";
 import { IProfileData } from "@/data/models";
+import { getCompetitionStatus } from "@/helpers/getCompetitionStatus";
 
 export async function POST(req: NextRequest): Promise<Response> {
   const body: FrameRequest = await req.json();
@@ -24,6 +25,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   // Get edit session
   const editSessionIdOrAddress = getEditSessionIdOrAddressFromMessage(message);
   const competitionData = await getEditSessionByAddressOrId(editSessionIdOrAddress);
+  const competitionStatus = getCompetitionStatus(competitionData);
   const allOptedInUsers = competitionData?.optedInUsers ?? [];
   const allFarcasterVoters = competitionData?.farcasterVoters ?? [];
   const allProfiles = await getAllProfiles();
@@ -49,6 +51,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   hackersProfiles.sort((a, b) => (b.votedPoints ?? 0) - (a.votedPoints ?? 0));
 
   const profilesToSend = encodeURIComponent(JSON.stringify(hackersProfiles.slice(0, 5)));
+  const votingsEnded = ["in-progress", "ended"].includes(competitionStatus);
 
   return new NextResponse(`
   <!DOCTYPE html>
@@ -56,8 +59,8 @@ export async function POST(req: NextRequest): Promise<Response> {
       <head>
           <meta property="fc:frame" content="vNext" />
           <meta property="fc:frame:image:aspect_ratio" content="1:1" />
-          <meta property="fc:frame:image" content="${config.hostURL}/game/results?user=${userToSend}&results=${profilesToSend}" />
-          <meta property="og:image" content="${config.hostURL}/game/results?user=${userToSend}&results=${profilesToSend}" />
+          <meta property="fc:frame:image" content="${config.hostURL}/game/results?user=${userToSend}&results=${profilesToSend}&votingsEnded=${votingsEnded}" />
+          <meta property="og:image" content="${config.hostURL}/game/results?user=${userToSend}&results=${profilesToSend}&votingsEnded=${votingsEnded}" />
           <meta property="fc:frame:button:1" content="What's next ➡️" />
           <meta property="fc:frame:post_url" content="${config.hostURL}/api/done" />
       </head>

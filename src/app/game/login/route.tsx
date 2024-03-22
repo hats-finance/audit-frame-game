@@ -34,15 +34,17 @@ export async function GET(request: Request) {
               flexDirection: "column",
               alignItems: "center",
               position: "absolute",
-              top: "8%",
+              bottom: "11%",
               left: "50%",
               transform: "translateX(-50%)",
             }}>
+            <p style={{ color: "white", fontSize: "24px", marginBottom: -5 }}>Next up</p>
             <div style={{ display: "flex", alignItems: "center" }}>
-              <img src={ipfsTransformUri(competition?.logo)} alt={competition?.name} width={100} height={100} />
-              {/* <img src={`${config.hostURL}/assets/images/placeholder.svg`} alt={competition?.name} width={100} height={100} /> */}
+              <img src={ipfsTransformUri(competition?.logo)} alt={competition?.name} width={70} height={70} />
+              {/* <img src={`${config.hostURL}/assets/images/placeholder.svg`} alt={competition?.name} width={70} height={70} /> */}
               <p style={{ color: "white", fontSize: "28px", marginLeft: "20px" }}>{competition?.name}</p>
             </div>
+            <p style={{ color: "white", fontSize: "30px", fontFamily: "IBMPlexSansBold", marginTop: 8 }}>Audit competition</p>
           </div>
         )}
       </div>

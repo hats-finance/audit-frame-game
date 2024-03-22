@@ -19,6 +19,8 @@ export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url);
 
+  const votingsEnded = JSON.parse(searchParams.get("votingsEnded") || "false") as boolean;
+
   const resultsData = searchParams.get("results");
   const results = JSON.parse(resultsData || "[]") as IProfileData[];
 
@@ -35,6 +37,20 @@ export async function GET(request: Request) {
         {/* POINTS */}
         <p style={{ color: "white", fontSize: "30px", position: "absolute", top: 10, right: 40 }}>
           HATs points: {farcasterUser?.hatsPoints ?? 0}
+        </p>
+
+        <p
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            width: "100%",
+            fontSize: "50px",
+            color: "white",
+            position: "absolute",
+            top: "31%",
+            fontFamily: "IBMPlexSansBold",
+          }}>
+          {votingsEnded ? "Votings Ended" : "Real-Time Votes"}
         </p>
 
         {/* RESULTS */}

@@ -4,6 +4,7 @@ import { config } from "@/config/config";
 import { getUserFromMessage } from "@/helpers/getUserFromMessage";
 import { getEditSessionIdOrAddressFromMessage } from "@/helpers/getEditSessionIdOrAddressFromMessage";
 import { getEditSessionByAddressOrId } from "@/data/requests/getEditSessionByAddressOrId";
+import { WARPCAST_CHANNEL } from "@/consts/urls";
 
 export async function POST(req: NextRequest): Promise<Response> {
   const body: FrameRequest = await req.json();
@@ -33,7 +34,7 @@ export async function POST(req: NextRequest): Promise<Response> {
           <meta property="og:image" content="${config.hostURL}/game/done?user=${userToSend}&voters=${voters}" />
           <meta property="fc:frame:button:1" content="Join the Audit F(r)ame Game Channel" />
           <meta property="fc:frame:button:1:action" content="link" />
-          <meta property="fc:frame:button:1:target" content="https://warpcast.com/~/channel/auditgames" />
+          <meta property="fc:frame:button:1:target" content="${WARPCAST_CHANNEL}" />
       </head>
   </html>
 `);
