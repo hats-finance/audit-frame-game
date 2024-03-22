@@ -13,6 +13,7 @@ export const getEditSessionByAddressOrId = async (addressOrEditSessionId: string
         res.json()
       );
       if (!editSession) return null;
+
       const vaultDesc = await getVaultDescription(addressOrEditSessionId, editSession!.chainId!);
       return { ...editSession, description: vaultDesc };
     } else {
@@ -21,8 +22,6 @@ export const getEditSessionByAddressOrId = async (addressOrEditSessionId: string
       return editSession;
     }
   } catch (error) {
-    console.log("uyy");
-    console.log(error);
     return null;
   }
 };
