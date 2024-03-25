@@ -26,8 +26,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   const user = await getUserFromMessage(message);
   const userToSend = encodeURIComponent(JSON.stringify(user));
-  // const hasUserLikedOrRecasted = user.liked || user.recasted;
-  const hasUserLikedOrRecasted = true;
+  const hasUserLikedOrRecasted = user.liked || user.recasted;
 
   // Check if user already voted
   const userVote = await getUserVote(body);
