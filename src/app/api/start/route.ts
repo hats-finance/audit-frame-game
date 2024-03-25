@@ -141,7 +141,9 @@ export async function POST(req: NextRequest): Promise<Response> {
           <meta property="fc:frame:button:1" content="${
             !hasUserLikedOrRecasted ? "You need to like and/or recast first" : "Go to game rules ➡️"
           }" />
-          <meta property="fc:frame:post_url" content="${!hasUserLikedOrRecasted ? "" : `${config.hostURL}/api/rules`}" />
+          <meta property="fc:frame:post_url" content="${
+            !hasUserLikedOrRecasted ? `${config.hostURL}/api/start` : `${config.hostURL}/api/rules`
+          }" />
       </head>
   </html>
 `);
