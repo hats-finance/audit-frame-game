@@ -86,7 +86,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       page = comingPage + 1;
     } else {
       page = comingPage;
-      const votedIdx = +message.input as number;
+      const votedIdx = +message.input.replaceAll("#", "") as number;
       if (isNaN(votedIdx)) {
         votedHacker = "invalid";
       } else {
