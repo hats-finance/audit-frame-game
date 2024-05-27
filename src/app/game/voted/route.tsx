@@ -36,9 +36,9 @@ export async function GET(request: Request) {
     (
       <div style={{ display: "flex", position: "relative", width: 1000, height: 1000, backgroundColor: COLORS.background }}>
         {/* POINTS */}
-        {/* <p style={{ color: "white", fontSize: "30px", position: "absolute", top: 10, left: 40 }}>
-          Game points: {getGamePoints(farcasterUser)}
-        </p> */}
+        <p style={{ color: "white", fontSize: "30px", position: "absolute", top: 10, left: 40 }}>
+          Voting power: {getGamePoints(farcasterUser)}
+        </p>
         <p style={{ color: "white", fontSize: "30px", position: "absolute", top: 10, right: 40 }}>
           HATs points: {farcasterUser?.hatsPoints ?? 0}
         </p>

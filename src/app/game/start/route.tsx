@@ -32,7 +32,7 @@ export async function GET(request: Request) {
           src={`${config.hostURL}/assets/images/${frameImage}.jpg`}
         />
         <p style={{ color: "white", fontSize: "30px", position: "absolute", top: 10, left: 40 }}>
-          Game points: {getGamePoints(farcasterUser)}
+          Voting power: {getGamePoints(farcasterUser)}
         </p>
         <p style={{ color: "white", fontSize: "30px", position: "absolute", top: 10, right: 40 }}>
           HATs points: {farcasterUser?.hatsPoints ?? 0}
